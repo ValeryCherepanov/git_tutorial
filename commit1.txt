@@ -5,3 +5,4 @@ change in master
 master 01
 another folder
 foo bar
+bar foo

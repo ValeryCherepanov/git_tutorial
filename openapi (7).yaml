@@ -76,6 +76,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
 components:
+  
   schemas:
     ServiceError:
       type: object
@@ -134,3 +135,12 @@ components:
           properties:
             email:
               type: string
+              
+  securitySchemes:
+    BasicAuthentication:
+      type: http
+      scheme: basic
+
+security: 
+  
+  - BasicAuthentication: []

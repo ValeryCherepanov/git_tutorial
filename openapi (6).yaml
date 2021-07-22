@@ -1,0 +1,146 @@
+swagger: 2.0
+
+info:
+  title: OpenAPI Specification for Multi-step search service
+  contact:
+    name: Valery Cherepanov
+    email: vcherepanov@arhis.com
+  version: '1.0'
+
+servers:
+  - url: https://mdmhubdev:8443/multisearch/rest
+    description: Development server
+    
+  - url: https://mdmhubrec:8443/multisearch/rest
+    description: QA server
+    
+  - url: https://mdmhubprd:8443/multisearch/rest
+    description: Production server
+    
+paths:
+  /search:
+    summary: Runs the Multi-step search operation
+    description: TODO
+    
+    get:
+      description: Runs the Multi-step search operation
+      parameters: 
+        - name: firstName
+          in: query
+          schema:
+            type: string
+            minLength: 2
+            example: ../search?firstName=John
+        - name: lastName
+          in: query
+          schema:
+            type: string
+            minLength: 2
+            example: ../search?lastName=Doe  
+        - name: maidenName
+          in: query
+          schema:
+            type: string
+            minLength: 2
+            example: ../search?maidenName=Smith
+        - name: birthDate
+          in: query
+          schema:
+            format: date
+            type: string
+            example: ../search?birthDate=1980-07-21
+        - name: email
+          in: query
+          schema:
+            type: string
+            example: ../search?email=john.doe@gmail.com    
+        - name: phone
+          in: query
+          description: Only the last 8 characters will be considered by the search algorithm
+          schema:
+            type: string
+            example: ../search?phone=1234567890  
+      responses:
+        '200':
+          description: Successfully returned found records
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/PersonResponse'
+                
+        '400':
+          description: Incorrect input
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+                
+        '500':
+          description: Server-side error
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+components:
+  schemas:
+  
+    ServiceError:                      
+      type: object
+      description: Service Error details
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        exceptionClassName:
+          type: string
+          
+    PersonResponse:
+      type: object
+      description: Person entity with a set of related fields
+      properties:
+        personneId:
+          type: string
+        prenom:
+          type: string
+        nom:
+          type: string
+        nomDeJeuneFille:
+          type: string
+        autresPrenoms:
+          type: string
+        dateDeNaissance:
+          type: string
+          format: date-time
+        address:
+          type: object
+          description: Best matching person's address
+          properties:
+            complement1et2:
+              type: string
+            numVoieEtVoie:
+              type: string  
+            complement3:
+              type: string  
+            ville:
+              type: string  
+            cp:
+              type: string  
+            etatProvince:
+              type: string  
+            pays:
+              type: string  
+        phone:
+          type: object
+          description: Best matching person's phone
+          properties:
+            numeroDeTelephone:
+              type: string
+        email:
+          type: object
+          description: Best matching person's email
+          properties:
+            email:
+              type: string
+
+    
